@@ -1,4 +1,4 @@
-﻿namespace DefaultNamespace
+﻿namespace ElementalExample
 {
     public enum ElementEnum
     {

@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace DefaultNamespace.Vars
+namespace Vars
 {
     [CreateAssetMenu(fileName = "new FloatVar", menuName = "SOs/Float Var")]
     public class FloatVar : ScriptableObject

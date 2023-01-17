@@ -1,8 +1,7 @@
-﻿using System;
+﻿using RuntimeSets;
 using UnityEditor;
-using UnityEngine;
 
-namespace RuntimeSets.Editor
+namespace _Game.Scripts.RuntimeSets.Editor
 {
     [CustomEditor(typeof(LaserRuntimeSet))]
     public class LaserRuntimeSetEditor : UnityEditor.Editor

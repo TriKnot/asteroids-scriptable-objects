@@ -1,9 +1,7 @@
-﻿using System;
-using DefaultNamespace.GameEvents;
-using TMPro;
+﻿using GameEvents;
 using UnityEngine;
 
-namespace DefaultNamespace.Vars
+namespace Vars
 {
     public class MyMono : MonoBehaviour
     {

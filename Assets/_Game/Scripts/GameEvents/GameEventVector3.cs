@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace DefaultNamespace.GameEvents
+namespace GameEvents
 {
     [CreateAssetMenu(fileName = "new Vector3 event", menuName = "ScriptableObjects/Events/VectorEvent", order = 0)]
     public class GameEventVector3 : ScriptableObject

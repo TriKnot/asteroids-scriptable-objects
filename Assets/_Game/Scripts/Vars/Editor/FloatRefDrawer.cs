@@ -1,8 +1,8 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
+using Vars;
 
-namespace DefaultNamespace.Vars.Editor
+namespace _Game.Scripts.Vars.Editor
 {
     [CustomPropertyDrawer(typeof(FloatRef))]
     public class FloatRefDrawer : UnityEditor.PropertyDrawer

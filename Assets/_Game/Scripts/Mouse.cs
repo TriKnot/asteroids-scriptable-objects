@@ -1,21 +1,17 @@
 ﻿using System;
-using DefaultNamespace.GameEvents;
+using GameEvents;
 using UnityEngine;
-using Random = System.Random;
 
-namespace DefaultNamespace
+public class Mouse : MonoBehaviour
 {
-    public class Mouse : MonoBehaviour
+    [SerializeField] private GameEventVector3 _myVector3Event;
+        
+        
+    private void Update()
     {
-        [SerializeField] private GameEventVector3 _myVector3Event;
-        
-        
-        private void Update()
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                _myVector3Event.Raise(Input.mousePosition);
-            }
+            _myVector3Event.Raise(Input.mousePosition);
         }
     }
 }

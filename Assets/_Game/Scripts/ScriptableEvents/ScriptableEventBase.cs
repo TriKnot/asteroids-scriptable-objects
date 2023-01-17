@@ -1,8 +1,7 @@
 ﻿using System;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
-namespace DefaultNamespace.ScriptableEvents
+namespace ScriptableEvents
 {
     public abstract class ScriptableEventBase : ScriptableObject
     {

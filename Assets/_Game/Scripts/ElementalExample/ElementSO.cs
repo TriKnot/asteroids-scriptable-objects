@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace ElementalExample
 {
     [CreateAssetMenu]
     public class ElementSO : ScriptableObject

@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace ElementalExample
 {
     public class JsonExample : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace DefaultNamespace.GameEvents
+namespace GameEvents
 {
     public class GameEventListenerVector3 : MonoBehaviour
     {

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace DefaultNamespace.Vars
+namespace Vars
 {
     [Serializable]
     public class FloatRef

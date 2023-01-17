@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Variables;
 
-namespace DefaultNamespace.ScriptableEvents
+namespace ScriptableEvents
 {
     [CreateAssetMenu(fileName = "new ScriptableEventIntReference", menuName = "ScriptableObjects/ScriptableEvent-IntReference", order = 0)]
     public class ScriptableEventIntReference : ScriptableEvent<IntReference>

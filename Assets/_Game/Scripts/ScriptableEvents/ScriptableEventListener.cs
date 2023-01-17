@@ -1,8 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace DefaultNamespace.ScriptableEvents
+namespace ScriptableEvents
 {
     public class ScriptableEventListener : MonoBehaviour
     {

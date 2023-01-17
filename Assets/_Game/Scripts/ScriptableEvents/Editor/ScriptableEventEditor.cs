@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using ScriptableEvents;
 using UnityEditor;
 using UnityEngine;
 
-namespace DefaultNamespace.ScriptableEvents.Editor
+namespace _Game.Scripts.ScriptableEvents.Editor
 {
     [CustomEditor(typeof(ScriptableEventBase), true)]
     public class ScriptableEventEditor : UnityEditor.Editor

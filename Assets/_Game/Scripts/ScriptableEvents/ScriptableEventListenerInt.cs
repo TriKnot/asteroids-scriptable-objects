@@ -1,6 +1,4 @@
-﻿using UnityEngine.Events;
-
-namespace DefaultNamespace.ScriptableEvents
+﻿namespace ScriptableEvents
 {
     public class ScriptableEventListenerInt : ScriptableEventListener<int, ScriptableEventInt, UnityEventInt>
     {
