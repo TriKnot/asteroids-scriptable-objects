@@ -1,6 +1,5 @@
 using System;
 using Asteroids;
-using DefaultNamespace.ScriptableEvents;
 using RuntimeSets;
 using UnityEngine;
 
@@ -21,7 +20,6 @@ namespace Ship
         {
             _rigidbody = GetComponent<Rigidbody2D>();
             _lasers.Add(gameObject);
-            Debug.Log(" Amount Of Lasers: " + _lasers.Amount);
         }
 
         private void OnDestroy()

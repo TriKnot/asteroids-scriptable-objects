@@ -1,4 +1,4 @@
-﻿using DefaultNamespace.ScriptableEvents;
+﻿using ScriptableEvents;
 using UnityEngine;
 
 namespace Variables
