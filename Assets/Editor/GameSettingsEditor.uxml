@@ -1,0 +1,31 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:Foldout text="Ship" name="ShipFoldout">
+        <ui:VisualElement name="ShipGroup" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+            <ui:VisualElement name="EngineGroup" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                <ui:Label tabindex="-1" text="Engine" display-tooltip-when-elided="true" name="Engine" />
+                <ui:FloatField label="Throttle Power" value="42.2" name="ThrottlePower" binding-path="throttlePower" />
+                <ui:FloatField label="Rotation Power" value="42.2" name="RotationPower" binding-path="rotationPower" />
+            </ui:VisualElement>
+            <ui:VisualElement name="HullGroup" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                <ui:Label tabindex="-1" text="Hull" display-tooltip-when-elided="true" name="Hull" />
+                <ui:IntegerField label="Starting Health" value="42" name="StartingHealth" binding-path="startingHealth" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:Foldout>
+    <ui:Foldout text="Asteroids" name="AsteroidFoldout">
+        <ui:VisualElement name="AsteroidGroup" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+            <ui:MinMaxSlider picking-mode="Ignore" label="Force" min-value="1" max-value="10" low-limit="0" high-limit="40" name="Force">
+                <ui:FloatField label="Min" value="42.2" name="MinForce" readonly="false" />
+                <ui:FloatField label="Max" value="42.2" name="MaxForce" />
+            </ui:MinMaxSlider>
+            <ui:MinMaxSlider picking-mode="Ignore" label="Size" min-value="1" max-value="10" low-limit="0" high-limit="40" name="Size">
+                <ui:FloatField label="Min" value="42.2" name="MinForce" readonly="false" />
+                <ui:FloatField label="Max" value="42.2" name="MaxForce" />
+            </ui:MinMaxSlider>
+            <ui:MinMaxSlider picking-mode="Ignore" label="Torque" min-value="1" max-value="10" low-limit="0" high-limit="40" name="Torque">
+                <ui:FloatField label="Min" value="42.2" name="MinForce" readonly="false" />
+                <ui:FloatField label="Max" value="42.2" name="MaxForce" />
+            </ui:MinMaxSlider>
+        </ui:VisualElement>
+    </ui:Foldout>
+</ui:UXML>
