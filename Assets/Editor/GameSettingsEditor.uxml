@@ -3,8 +3,8 @@
         <ui:VisualElement name="ShipGroup" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
             <ui:VisualElement name="EngineGroup" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
                 <ui:Label tabindex="-1" text="Engine" display-tooltip-when-elided="true" name="Engine" />
-                <ui:FloatField label="Throttle Power" value="42.2" name="ThrottlePower" binding-path="throttlePower" />
-                <ui:FloatField label="Rotation Power" value="42.2" name="RotationPower" binding-path="rotationPower" />
+                <ui:Slider picking-mode="Ignore" label="Throttle Power" value="2" high-value="10" name="ThrottlePower" />
+                <ui:Slider picking-mode="Ignore" label="Rotation Power" value="2" high-value="10" name="RotationPower" />
             </ui:VisualElement>
             <ui:VisualElement name="HullGroup" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
                 <ui:Label tabindex="-1" text="Hull" display-tooltip-when-elided="true" name="Hull" />
