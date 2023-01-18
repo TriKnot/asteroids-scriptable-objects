@@ -14,8 +14,8 @@ namespace Editor
         [SerializeField] private VisualTreeAsset visualTreeAsset;
         
         //Ship references
-        private FloatField _shipThrottlePowerField;
-        private FloatField _shipRotationPowerField;
+        private Slider _shipThrottlePowerSlider;
+        private Slider _shipRotationPowerField;
         private IntegerField _shipStartingHealthField;
         
         //Astroid references
@@ -75,11 +75,11 @@ namespace Editor
         {
             //Get references to and initialize fields
             //Ship
-            _shipThrottlePowerField = rootVisualElement.Q<FloatField>("ThrottlePower");
-            _shipThrottlePowerField.RegisterValueChangedCallback(OnShipThrottleChanged);
-            _shipThrottlePowerField.SetValueWithoutNotify(_shipSettings.Throttle);
+            _shipThrottlePowerSlider = rootVisualElement.Q<Slider>("ThrottlePower");
+            _shipThrottlePowerSlider.RegisterValueChangedCallback(OnShipThrottleChanged);
+            _shipThrottlePowerSlider.SetValueWithoutNotify(_shipSettings.Throttle);
             
-            _shipRotationPowerField = rootVisualElement.Q<FloatField>("RotationPower");
+            _shipRotationPowerField = rootVisualElement.Q<Slider>("RotationPower");
             _shipRotationPowerField.RegisterValueChangedCallback(OnShipRotationChanged);
             _shipRotationPowerField.SetValueWithoutNotify(_shipSettings.Rotation);
             
@@ -187,7 +187,6 @@ namespace Editor
             _asteroidSpawnerSettings.SpawnRate = evt.newValue;
         }
 
-
         private void OnAsteroidTorqueFieldChanged(ChangeEvent<Vector2> evt)
         {
             EditorUtility.SetDirty(_asteroidSettings);
@@ -206,8 +205,6 @@ namespace Editor
             _asteroidSettings.Force = evt.newValue;
         }
         
-        
-
         private void OnShipThrottleChanged(ChangeEvent<float> evt)
         {
             EditorUtility.SetDirty(_shipSettings);
@@ -217,7 +214,7 @@ namespace Editor
         private void OnShipRotationChanged(ChangeEvent<float> evt)
         {
             EditorUtility.SetDirty(_shipSettings);
-            _shipSettings.Throttle = evt.newValue;
+            _shipSettings.Rotation = evt.newValue;
         }
         
         private void OnShipHealthChanged(ChangeEvent<int> evt)
