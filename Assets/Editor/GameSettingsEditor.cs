@@ -1,4 +1,5 @@
-﻿using Asteroids;
+﻿using System;
+using Asteroids;
 using Ship;
 using UnityEditor;
 using UnityEngine;
@@ -114,46 +115,41 @@ namespace Editor
             _spawnAmountMaxField.SetValueWithoutNotify(_asteroidSpawnerSettings.SpawnAmount.y);
             
             _asteroidsSpawnTop = rootVisualElement.Q<Toggle>("AsteroidsSpawnTop");
-            _asteroidsSpawnTop.RegisterValueChangedCallback(OnAsteroidsSpawnTopChanged);
+            _asteroidsSpawnTop.RegisterValueChangedCallback(evt => OnAsteroidSpawnPositionChanged(evt, SpawnLocation.Top));
             _asteroidsSpawnTop.SetValueWithoutNotify(_asteroidSpawnerSettings.CanSpawnTop);
             
             _asteroidsSpawnBot = rootVisualElement.Q<Toggle>("AsteroidsSpawnBot");
-            _asteroidsSpawnBot.RegisterValueChangedCallback(OnAsteroidsSpawnBotChanged);
+            _asteroidsSpawnBot.RegisterValueChangedCallback(evt => OnAsteroidSpawnPositionChanged(evt, SpawnLocation.Bottom));
             _asteroidsSpawnBot.SetValueWithoutNotify(_asteroidSpawnerSettings.CanSpawnBot);
             
             _asteroidsSpawnLeft = rootVisualElement.Q<Toggle>("AsteroidsSpawnLeft");
-            _asteroidsSpawnLeft.RegisterValueChangedCallback(OnAsteroidsSpawnLeftChanged);
+            _asteroidsSpawnLeft.RegisterValueChangedCallback(evt => OnAsteroidSpawnPositionChanged(evt, SpawnLocation.Left));
             _asteroidsSpawnLeft.SetValueWithoutNotify(_asteroidSpawnerSettings.CanSpawnLeft);
             
             _asteroidsSpawnRight = rootVisualElement.Q<Toggle>("AsteroidsSpawnRight");
-            _asteroidsSpawnRight.RegisterValueChangedCallback(OnAsteroidsSpawnRightChanged);
+            _asteroidsSpawnRight.RegisterValueChangedCallback(evt => OnAsteroidSpawnPositionChanged(evt, SpawnLocation.Right));
             _asteroidsSpawnRight.SetValueWithoutNotify(_asteroidSpawnerSettings.CanSpawnRight);
             
         }
-        
-        
-
-        private void OnAsteroidsSpawnRightChanged(ChangeEvent<bool> evt)
+        private void OnAsteroidSpawnPositionChanged(ChangeEvent<bool> evt, SpawnLocation spawnLocation)
         {
-            _asteroidSpawnerSettings.CanSpawnRight = evt.newValue;
-            EditorUtility.SetDirty(_asteroidSpawnerSettings);
-        }
-
-        private void OnAsteroidsSpawnLeftChanged(ChangeEvent<bool> evt)
-        {
-            _asteroidSpawnerSettings.CanSpawnLeft = evt.newValue;
-            EditorUtility.SetDirty(_asteroidSpawnerSettings);
-        }
-
-        private void OnAsteroidsSpawnBotChanged(ChangeEvent<bool> evt)
-        {
-            _asteroidSpawnerSettings.CanSpawnBot = evt.newValue;
-            EditorUtility.SetDirty(_asteroidSpawnerSettings);
-        }
-
-        private void OnAsteroidsSpawnTopChanged(ChangeEvent<bool> evt)
-        {
-            _asteroidSpawnerSettings.CanSpawnTop = evt.newValue;
+            switch (spawnLocation)
+            {
+                case SpawnLocation.Bottom:
+                    _asteroidSpawnerSettings.CanSpawnBot = evt.newValue;
+                    break;
+                case SpawnLocation.Top:
+                    _asteroidSpawnerSettings.CanSpawnTop = evt.newValue;
+                    break;
+                case SpawnLocation.Left:
+                    _asteroidSpawnerSettings.CanSpawnLeft = evt.newValue;
+                    break;
+                case SpawnLocation.Right:
+                    _asteroidSpawnerSettings.CanSpawnRight = evt.newValue;
+                    break; 
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(spawnLocation), spawnLocation, null);
+            }
             EditorUtility.SetDirty(_asteroidSpawnerSettings);
         }
 
