@@ -1,0 +1,5 @@
+.header {
+    -unity-font-style: bold;
+    font-size: 16px;
+    -unity-text-align: upper-center;
+}

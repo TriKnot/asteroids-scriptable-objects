@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AsteroidSpawnerSettings
   m_EditorClassIdentifier: 
   SpawnRate: {x: 1, y: 1}
-  SpawnAmount: {x: 1, y: 2}
+  SpawnAmount: {x: 14, y: 22}
   CanSpawnTop: 1
   CanSpawnBot: 1
   CanSpawnLeft: 1

@@ -58,6 +58,8 @@ namespace Editor
             LoadSettings();
             
             InitFields();
+            
+            
         }
         
         
