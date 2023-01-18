@@ -26,6 +26,23 @@
                 <ui:FloatField label="Min" value="42.2" name="MinForce" readonly="false" />
                 <ui:FloatField label="Max" value="42.2" name="MaxForce" />
             </ui:MinMaxSlider>
+            <ui:MinMaxSlider picking-mode="Ignore" label="Spawnrate" min-value="1" max-value="10" low-limit="0" high-limit="40" name="SpawnRate" focusable="true">
+                <ui:FloatField label="Min" value="42.2" name="MinForce" readonly="false" />
+                <ui:FloatField label="Max" value="42.2" name="MaxForce" />
+            </ui:MinMaxSlider>
+            <ui:SliderInt picking-mode="Ignore" label="Min Amount Spawned" value="42" high-value="100" name="SpawnAmountMin">
+                <ui:IntegerField value="42" name="Min" />
+            </ui:SliderInt>
+            <ui:SliderInt picking-mode="Ignore" label="Max Amount Spawned" value="42" high-value="100" name="SpawnAmountMax">
+                <ui:IntegerField value="42" name="Max" />
+            </ui:SliderInt>
+            <ui:GroupBox name="ToggleDirectionsGroup">
+                <ui:Label tabindex="-1" text="Spawn Directions" display-tooltip-when-elided="true" name="Label" />
+                <ui:Toggle label="Top" name="AsteroidsSpawnTop" />
+                <ui:Toggle label="Bot" name="AsteroidsSpawnBot" />
+                <ui:Toggle label="Left" name="AsteroidsSpawnLeft" />
+                <ui:Toggle label="Right" name="AsteroidsSpawnRight" />
+            </ui:GroupBox>
         </ui:VisualElement>
     </ui:Foldout>
 </ui:UXML>

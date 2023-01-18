@@ -16,14 +16,25 @@ namespace Editor
         private FloatField _shipThrottlePowerField;
         private FloatField _shipRotationPowerField;
         private IntegerField _shipStartingHealthField;
-        private ShipSettings _shipSettings;
         
         //Astroid references
-        private MinMaxSlider _astroidForceField;
-        private MinMaxSlider _astroidSizeField;
-        private MinMaxSlider _astroidTorqueField;
-        private AsteroidSettings _asteroidSettings;
-
+        private MinMaxSlider _asteroidForceField;
+        private MinMaxSlider _asteroidSizeField;
+        private MinMaxSlider _asteroidTorqueField;
+        
+        //Asteroid spawner references
+        private MinMaxSlider _spawnRateField;
+        private SliderInt _spawnAmountMinField;
+        private SliderInt _spawnAmountMaxField;
+        private Toggle _asteroidsSpawnTop;
+        private Toggle _asteroidsSpawnBot;
+        private Toggle _asteroidsSpawnLeft;
+        private Toggle _asteroidsSpawnRight;
+        
+        [Header("Settings Scriptable Objects")]
+        [SerializeField] private ShipSettings _shipSettings;
+        [SerializeField] private AsteroidSettings _asteroidSettings;
+        [SerializeField] private AsteroidSpawnerSettings _asteroidSpawnerSettings;
         
         [MenuItem("Tools/Game Settings")]
         public static void ShowWindow()
@@ -43,9 +54,20 @@ namespace Editor
             var root = rootVisualElement;
             visualTreeAsset.CloneTree(root);
             
-            _shipSettings = Resources.Load<ShipSettings>("ScriptableObjects/ShipSettings");
-            _asteroidSettings = Resources.Load<AsteroidSettings>("ScriptableObjects/AsteroidSettings");
+            LoadSettings();
+            
             InitFields();
+        }
+        
+        
+        private void LoadSettings()
+        {
+            if(_shipSettings == null)
+                _shipSettings = Resources.Load<ShipSettings>("ScriptableObjects/ShipSettings");
+            if(_asteroidSettings == null)
+                _asteroidSettings = Resources.Load<AsteroidSettings>("ScriptableObjects/AsteroidSettings");
+            if(_asteroidSpawnerSettings == null)
+                _asteroidSpawnerSettings = Resources.Load<AsteroidSpawnerSettings>("ScriptableObjects/AsteroidSpawnerSettings");
         }
         
         private void InitFields()
@@ -66,19 +88,105 @@ namespace Editor
             
             
             //Asteroid
-            _astroidForceField = rootVisualElement.Q<MinMaxSlider>("Force");
-            _astroidForceField.RegisterValueChangedCallback(OnAsteroidForceFieldChanged);
-            _astroidForceField.SetValueWithoutNotify(_asteroidSettings.Force);
+            _asteroidForceField = rootVisualElement.Q<MinMaxSlider>("Force");
+            _asteroidForceField.RegisterValueChangedCallback(OnAsteroidForceFieldChanged);
+            _asteroidForceField.SetValueWithoutNotify(_asteroidSettings.Force);
             
-            _astroidSizeField = rootVisualElement.Q<MinMaxSlider>("Size");
-            _astroidSizeField.RegisterValueChangedCallback(OnAsteroidSizeFieldChanged);
-            _astroidSizeField.SetValueWithoutNotify(_asteroidSettings.Size);
+            _asteroidSizeField = rootVisualElement.Q<MinMaxSlider>("Size");
+            _asteroidSizeField.RegisterValueChangedCallback(OnAsteroidSizeFieldChanged);
+            _asteroidSizeField.SetValueWithoutNotify(_asteroidSettings.Size);
             
-            _astroidTorqueField = rootVisualElement.Q<MinMaxSlider>("Torque");
-            _astroidTorqueField.RegisterValueChangedCallback(OnAsteroidTorqueFieldChanged);
-            _astroidTorqueField.SetValueWithoutNotify(_asteroidSettings.Torque);
+            _asteroidTorqueField = rootVisualElement.Q<MinMaxSlider>("Torque");
+            _asteroidTorqueField.RegisterValueChangedCallback(OnAsteroidTorqueFieldChanged);
+            _asteroidTorqueField.SetValueWithoutNotify(_asteroidSettings.Torque);
+            
+            //AsteroidSpawner
+            _spawnRateField = rootVisualElement.Q<MinMaxSlider>("SpawnRate");
+            _spawnRateField.RegisterValueChangedCallback(OnSpawnRateFieldChanged);
+            _spawnRateField.SetValueWithoutNotify(_asteroidSpawnerSettings.SpawnRate);
+            
+            _spawnAmountMinField = rootVisualElement.Q<SliderInt>("SpawnAmountMin");
+            _spawnAmountMinField.RegisterValueChangedCallback(OnMinSpawnAmountFieldChanged);
+            _spawnAmountMinField.SetValueWithoutNotify(_asteroidSpawnerSettings.SpawnAmount.x);
+            
+            _spawnAmountMaxField = rootVisualElement.Q<SliderInt>("SpawnAmountMax");
+            _spawnAmountMaxField.RegisterValueChangedCallback(OnMaxSpawnAmountFieldChanged);
+            _spawnAmountMaxField.SetValueWithoutNotify(_asteroidSpawnerSettings.SpawnAmount.y);
+            
+            _asteroidsSpawnTop = rootVisualElement.Q<Toggle>("AsteroidsSpawnTop");
+            _asteroidsSpawnTop.RegisterValueChangedCallback(OnAsteroidsSpawnTopChanged);
+            _asteroidsSpawnTop.SetValueWithoutNotify(_asteroidSpawnerSettings.CanSpawnTop);
+            
+            _asteroidsSpawnBot = rootVisualElement.Q<Toggle>("AsteroidsSpawnBot");
+            _asteroidsSpawnBot.RegisterValueChangedCallback(OnAsteroidsSpawnBotChanged);
+            _asteroidsSpawnBot.SetValueWithoutNotify(_asteroidSpawnerSettings.CanSpawnBot);
+            
+            _asteroidsSpawnLeft = rootVisualElement.Q<Toggle>("AsteroidsSpawnLeft");
+            _asteroidsSpawnLeft.RegisterValueChangedCallback(OnAsteroidsSpawnLeftChanged);
+            _asteroidsSpawnLeft.SetValueWithoutNotify(_asteroidSpawnerSettings.CanSpawnLeft);
+            
+            _asteroidsSpawnRight = rootVisualElement.Q<Toggle>("AsteroidsSpawnRight");
+            _asteroidsSpawnRight.RegisterValueChangedCallback(OnAsteroidsSpawnRightChanged);
+            _asteroidsSpawnRight.SetValueWithoutNotify(_asteroidSpawnerSettings.CanSpawnRight);
             
         }
+        
+        
+
+        private void OnAsteroidsSpawnRightChanged(ChangeEvent<bool> evt)
+        {
+            _asteroidSpawnerSettings.CanSpawnRight = evt.newValue;
+            EditorUtility.SetDirty(_asteroidSpawnerSettings);
+        }
+
+        private void OnAsteroidsSpawnLeftChanged(ChangeEvent<bool> evt)
+        {
+            _asteroidSpawnerSettings.CanSpawnLeft = evt.newValue;
+            EditorUtility.SetDirty(_asteroidSpawnerSettings);
+        }
+
+        private void OnAsteroidsSpawnBotChanged(ChangeEvent<bool> evt)
+        {
+            _asteroidSpawnerSettings.CanSpawnBot = evt.newValue;
+            EditorUtility.SetDirty(_asteroidSpawnerSettings);
+        }
+
+        private void OnAsteroidsSpawnTopChanged(ChangeEvent<bool> evt)
+        {
+            _asteroidSpawnerSettings.CanSpawnTop = evt.newValue;
+            EditorUtility.SetDirty(_asteroidSpawnerSettings);
+        }
+
+        private void OnMaxSpawnAmountFieldChanged(ChangeEvent<int> evt)
+        {
+            EditorUtility.SetDirty(_asteroidSpawnerSettings);
+            var minVal = _asteroidSpawnerSettings.SpawnAmount.x;
+            if(_asteroidSpawnerSettings.SpawnAmount.x > _asteroidSpawnerSettings.SpawnAmount.y)
+            {
+                minVal = evt.newValue;
+                _spawnAmountMinField.SetValueWithoutNotify(minVal);
+            }
+            _asteroidSpawnerSettings.SpawnAmount = new Vector2Int(minVal, evt.newValue);
+        }
+
+        private void OnMinSpawnAmountFieldChanged(ChangeEvent<int> evt)
+        {
+            EditorUtility.SetDirty(_asteroidSpawnerSettings);
+            var maxVal = _asteroidSpawnerSettings.SpawnAmount.y;
+            if(_asteroidSpawnerSettings.SpawnAmount.x > _asteroidSpawnerSettings.SpawnAmount.y)
+            {
+                maxVal = evt.newValue;
+                _spawnAmountMaxField.SetValueWithoutNotify(maxVal);
+            }
+            _asteroidSpawnerSettings.SpawnAmount = new Vector2Int(evt.newValue, maxVal);
+        }
+
+        private void OnSpawnRateFieldChanged(ChangeEvent<Vector2> evt)
+        {
+            EditorUtility.SetDirty(_asteroidSpawnerSettings);
+            _asteroidSpawnerSettings.SpawnRate = evt.newValue;
+        }
+
 
         private void OnAsteroidTorqueFieldChanged(ChangeEvent<Vector2> evt)
         {
