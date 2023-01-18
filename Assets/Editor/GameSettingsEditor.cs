@@ -107,11 +107,11 @@ namespace Editor
             _spawnRateField.SetValueWithoutNotify(_asteroidSpawnerSettings.SpawnRate);
             
             _spawnAmountMinField = rootVisualElement.Q<SliderInt>("SpawnAmountMin");
-            _spawnAmountMinField.RegisterValueChangedCallback(OnMinSpawnAmountFieldChanged);
+            _spawnAmountMinField.RegisterValueChangedCallback(evt => OnSpawnAmountFieldChanged(evt, true));
             _spawnAmountMinField.SetValueWithoutNotify(_asteroidSpawnerSettings.SpawnAmount.x);
             
             _spawnAmountMaxField = rootVisualElement.Q<SliderInt>("SpawnAmountMax");
-            _spawnAmountMaxField.RegisterValueChangedCallback(OnMaxSpawnAmountFieldChanged);
+            _spawnAmountMaxField.RegisterValueChangedCallback(evt => OnSpawnAmountFieldChanged(evt, false));
             _spawnAmountMaxField.SetValueWithoutNotify(_asteroidSpawnerSettings.SpawnAmount.y);
             
             _asteroidsSpawnTop = rootVisualElement.Q<Toggle>("AsteroidsSpawnTop");
@@ -153,28 +153,32 @@ namespace Editor
             EditorUtility.SetDirty(_asteroidSpawnerSettings);
         }
 
-        private void OnMaxSpawnAmountFieldChanged(ChangeEvent<int> evt)
+        private void OnSpawnAmountFieldChanged(ChangeEvent<int> evt, bool isMin)
         {
             EditorUtility.SetDirty(_asteroidSpawnerSettings);
             var minVal = _asteroidSpawnerSettings.SpawnAmount.x;
-            if(_asteroidSpawnerSettings.SpawnAmount.x > _asteroidSpawnerSettings.SpawnAmount.y)
+            var maxVal = _asteroidSpawnerSettings.SpawnAmount.y;
+            
+            if(isMin)
             {
                 minVal = evt.newValue;
-                _spawnAmountMinField.SetValueWithoutNotify(minVal);
+                if(minVal > maxVal)
+                {
+                    maxVal = minVal;
+                    _spawnAmountMaxField.SetValueWithoutNotify(maxVal);
+                }
             }
-            _asteroidSpawnerSettings.SpawnAmount = new Vector2Int(minVal, evt.newValue);
-        }
-
-        private void OnMinSpawnAmountFieldChanged(ChangeEvent<int> evt)
-        {
-            EditorUtility.SetDirty(_asteroidSpawnerSettings);
-            var maxVal = _asteroidSpawnerSettings.SpawnAmount.y;
-            if(_asteroidSpawnerSettings.SpawnAmount.x > _asteroidSpawnerSettings.SpawnAmount.y)
+            else
             {
                 maxVal = evt.newValue;
-                _spawnAmountMaxField.SetValueWithoutNotify(maxVal);
+                if(minVal > maxVal)
+                {
+                    minVal = maxVal;
+                    _spawnAmountMinField.SetValueWithoutNotify(minVal);
+                }
             }
-            _asteroidSpawnerSettings.SpawnAmount = new Vector2Int(evt.newValue, maxVal);
+
+            _asteroidSpawnerSettings.SpawnAmount = new Vector2Int(minVal, maxVal);
         }
 
         private void OnSpawnRateFieldChanged(ChangeEvent<Vector2> evt)
