@@ -239,16 +239,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1867257715}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a1ae38084ec4c29aa5d36b28f72a324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _asteroidPrefab: {fileID: 1784223117350305363, guid: 01106835b2bc0e347a3bb06b7544b51a, type: 3}
-  minSpawnTime: {fileID: 11400000, guid: 65d035a05ed9f414099bce6746442207, type: 2}
-  maxSpawnTime: 2.78
-  minAmount: 0
-  maxAmount: 0
+  _asteroidSpawnerSettings: {fileID: 11400000, guid: 4012a6754e7ec94468e486308499a7d6, type: 2}
 --- !u!4 &1867257717
 Transform:
   m_ObjectHideFlags: 0

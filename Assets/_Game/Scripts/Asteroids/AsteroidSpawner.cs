@@ -9,23 +9,11 @@ namespace Asteroids
     {
 
         [SerializeField] private Asteroid _asteroidPrefab;
-        public FloatVariable minSpawnTime;
-        public float maxSpawnTime;
-        public float minAmount;
-        public float maxAmount;
-
+        [SerializeField] private AsteroidSpawnerSettings _asteroidSpawnerSettings;
         
         private float _timer;
         private float _nextSpawnTime;
         private Camera _camera;
-
-        private enum SpawnLocation
-        {
-            Top,
-            Bottom,
-            Left,
-            Right
-        }
 
         private void Start()
         {
@@ -48,7 +36,7 @@ namespace Asteroids
 
         private void UpdateNextSpawnTime()
         {
-            _nextSpawnTime = Random.Range(minSpawnTime.Value, maxSpawnTime);
+            _nextSpawnTime = Random.Range(_asteroidSpawnerSettings.MinSpawnTime, _asteroidSpawnerSettings.MaxSpawnTime);
         }
 
         private void UpdateTimer()
@@ -63,7 +51,7 @@ namespace Asteroids
 
         private void Spawn()
         {
-            var amount = Random.Range(minAmount, maxAmount + 1);
+            var amount = Random.Range(_asteroidSpawnerSettings.MinAmount, _asteroidSpawnerSettings.MaxAmount + 1);
             
             for (var i = 0; i < amount; i++)
             {
@@ -73,17 +61,18 @@ namespace Asteroids
             }
         }
 
-        private static SpawnLocation GetSpawnLocation()
+        private SpawnLocation GetSpawnLocation()
         {
-            var roll = Random.Range(0, 4);
+            SpawnLocation location;
 
-            return roll switch
-            {
-                1 => SpawnLocation.Bottom,
-                2 => SpawnLocation.Left,
-                3 => SpawnLocation.Right,
-                _ => SpawnLocation.Top
-            };
+            do{
+                location = (SpawnLocation)Random.Range(0, 4);
+            } while (location == SpawnLocation.Top && _asteroidSpawnerSettings.CanSpawnTop == false ||
+                     location == SpawnLocation.Bottom && _asteroidSpawnerSettings.CanSpawnBot == false ||
+                     location == SpawnLocation.Left && _asteroidSpawnerSettings.CanSpawnLeft == false||
+                     location == SpawnLocation.Right && _asteroidSpawnerSettings.CanSpawnRight == false );
+            print(location);
+            return location;
         }
 
         private Vector3 GetStartPosition(SpawnLocation spawnLocation)
@@ -115,5 +104,13 @@ namespace Asteroids
             
             return _camera.ScreenToWorldPoint(pos);
         }
+    }
+
+    public enum SpawnLocation
+    {
+        Top,
+        Bottom,
+        Left,
+        Right
     }
 }

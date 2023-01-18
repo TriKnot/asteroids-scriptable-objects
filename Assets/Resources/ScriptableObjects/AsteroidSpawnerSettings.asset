@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 213ba3458ba2494ea77ebce5a604f0ba, type: 3}
-  m_Name: AsteroidSettings
+  m_Script: {fileID: 11500000, guid: 891da25f69dc4f07999f335dafb35847, type: 3}
+  m_Name: AsteroidSpawnerSettings
   m_EditorClassIdentifier: 
-  Force: {x: 1, y: 10}
-  Size: {x: 1, y: 2}
-  Torque: {x: 1, y: 2}
+  SpawnRate: {x: 1, y: 1}
+  SpawnAmount: {x: 1, y: 2}
+  CanSpawnTop: 1
+  CanSpawnBot: 1
+  CanSpawnLeft: 1
+  CanSpawnRight: 1

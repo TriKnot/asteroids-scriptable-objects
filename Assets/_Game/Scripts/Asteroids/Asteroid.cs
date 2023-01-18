@@ -73,13 +73,13 @@ namespace Asteroids
 
         private void AddForce()
         {
-            var force = Random.Range(_asteroidSettings._minForce, _asteroidSettings._maxForce);
+            var force = Random.Range(_asteroidSettings.MinForce, _asteroidSettings.MaxForce);
             _rigidbody.AddForce( _direction * force, ForceMode2D.Impulse);
         }
 
         private void AddTorque()
         {
-            var torque = Random.Range(_asteroidSettings._minTorque, _asteroidSettings._maxTorque);
+            var torque = Random.Range(_asteroidSettings.MinTorque, _asteroidSettings.MaxTorque);
             var roll = Random.Range(0, 2);
 
             if (roll == 0)
@@ -90,7 +90,7 @@ namespace Asteroids
 
         private void SetSize()
         {
-            var size = Random.Range(_asteroidSettings._minSize, _asteroidSettings._maxSize);
+            var size = Random.Range(_asteroidSettings.MinSize, _asteroidSettings.MaxSize);
             _shape.localScale = new Vector3(size, size, 0f);
         }
     }

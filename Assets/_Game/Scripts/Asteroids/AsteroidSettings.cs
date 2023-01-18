@@ -11,12 +11,12 @@ namespace Asteroids
         public Vector2 Size;
         public Vector2 Torque;
         
-        public float _minForce => Force.x;
-        public float _maxForce => Force.y;
-        public float _minSize => Size.x;
-        public float _maxSize => Size.y;
-        public float _minTorque => Torque.x;
-        public float _maxTorque => Torque.y;
+        public float MinForce => Force.x;
+        public float MaxForce => Force.y;
+        public float MinSize => Size.x;
+        public float MaxSize => Size.y;
+        public float MinTorque => Torque.x;
+        public float MaxTorque => Torque.y;
 
     }
 }
