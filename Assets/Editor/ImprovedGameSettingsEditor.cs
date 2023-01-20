@@ -81,6 +81,7 @@ namespace Editor
         {
             var shipFoldout = new Foldout();
             shipFoldout.text = shipSettings.name;
+            shipFoldout.AddToClassList("asteroids-foldout");
             
             Label shipNameLabel = new Label("Ship");
             shipNameLabel.AddToClassList("asteroids-header");
@@ -107,6 +108,7 @@ namespace Editor
         {
             var asteroidFoldout = new Foldout();
             asteroidFoldout.text = asteroidSettings.name;
+            asteroidFoldout.AddToClassList("asteroids-foldout");
             
             Label shipNameLabel = new Label("Asteroids");
             shipNameLabel.AddToClassList("asteroids-header");
@@ -131,6 +133,7 @@ namespace Editor
         {   
             var asteroidSpawnerFoldout = new Foldout();
             asteroidSpawnerFoldout.text = asteroidSpawner.name;
+            asteroidSpawnerFoldout.AddToClassList("asteroids-foldout");
             
             Label asteroidSpawnerLabel = new Label("Asteroid Spawner");
             asteroidSpawnerLabel.AddToClassList("asteroids-header");
@@ -157,6 +160,7 @@ namespace Editor
         {
             SerializedProperty sp = so.GetIterator();
             VisualElement ve = new VisualElement();
+            ve.AddToClassList("asteroids-bool-group");
             
             while (sp.NextVisible(true))
             {
@@ -188,18 +192,18 @@ namespace Editor
             switch (sp.propertyType)
             {
                 case SerializedPropertyType.Vector2:
-                    ve = new VisualElement();
                     ve.Add(new Label(label));
                     
-                    AddOwnMinMaxSlider(sp, ve);
+                    AddCustomMinMaxSlider(sp, ve);
+                    ve.AddToClassList("asteroids-min-max-slider");
                     
                     break;
                 
                 case SerializedPropertyType.Vector2Int:
-                    ve = new VisualElement();
                     ve.Add(new Label(label));
                     
-                    AddOwnMinMaxIntSlider(sp, ve);
+                    AddCustomMinMaxIntSlider(sp, ve);
+                    ve.AddToClassList("asteroids-int-min-max");
 
                     break;
                 
@@ -213,12 +217,14 @@ namespace Editor
             return ve;
         }
 
-        private void AddOwnMinMaxIntSlider(SerializedProperty sp, VisualElement ve)
+        private void AddCustomMinMaxIntSlider(SerializedProperty sp, VisualElement ve)
         {
             var min = sp.FindPropertyRelative("x");
             var max = sp.FindPropertyRelative("y");
 
             var minVisual = new VisualElement();
+            minVisual.AddToClassList("asteroids-int-min-max-slider");
+            minVisual.Add(new Label("Min"));
             var minSlider = new SliderInt(0, 10);
             minSlider.BindProperty(min);
             var minField = new IntegerField();
@@ -228,6 +234,8 @@ namespace Editor
             ve.Add(minVisual);
 
             var maxVisual = new VisualElement();
+            maxVisual.AddToClassList("asteroids-int-min-max-slider");
+            maxVisual.Add(new Label("Max"));
             var maxSlider = new SliderInt(0, 10);
             maxSlider.BindProperty(max);
             var maxField = new IntegerField();
@@ -261,7 +269,7 @@ namespace Editor
             
         }
 
-        private void AddOwnMinMaxSlider(SerializedProperty sp,VisualElement ve)
+        private void AddCustomMinMaxSlider(SerializedProperty sp,VisualElement ve)
         {
             FloatField minField = new FloatField();
             minField.BindProperty(sp.FindPropertyRelative("x"));

@@ -1,26 +1,27 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <Style src="project://database/Assets/Editor/USS/UI_Tool.uss?fileID=7433441132597879392&amp;guid=ee6c8819551ea2c4ca5e8ed06884d13a&amp;type=3#UI_Tool" />
-    <ui:Foldout text="Ship" name="ShipFoldout">
+    <Style src="project://database/Assets/Editor/USS/Game_Settings.uss?fileID=7433441132597879392&amp;guid=ee6c8819551ea2c4ca5e8ed06884d13a&amp;type=3#Game_Settings" />
+    <ui:Foldout text="Ship" name="ShipFoldout" class="asteroids-foldout">
         <ui:VisualElement name="ShipGroup" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
             <ui:VisualElement name="EngineGroup" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-                <ui:Label tabindex="-1" text="Engine" display-tooltip-when-elided="true" name="Engine" class="header" />
-                <ui:Slider picking-mode="Ignore" label="Throttle Power" value="2" high-value="10" name="ThrottlePower" />
-                <ui:Slider picking-mode="Ignore" label="Rotation Power" value="2" high-value="10" name="RotationPower" />
+                <ui:Label tabindex="-1" text="Engine" display-tooltip-when-elided="true" name="Engine" class="header asteroids-header" />
+                <uie:PropertyField name="ThrottlePower" label="Throttle Power" binding-path="Throttle" class="asteroids-slider" />
+                <uie:PropertyField name="RotationPower" label="Rotation Power" binding-path="Rotation" class="asteroids-slider" />
             </ui:VisualElement>
             <ui:VisualElement name="HullGroup" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-                <ui:Label tabindex="-1" text="Hull" display-tooltip-when-elided="true" name="Hull" class="header" />
-                <ui:IntegerField label="Starting Health" value="42" name="StartingHealth" binding-path="startingHealth" />
+                <ui:Label tabindex="-1" text="Hull" display-tooltip-when-elided="true" name="Hull" class="header asteroids-header" />
+                <uie:PropertyField binding-path="Health" name="StartingHealth" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:Foldout>
-    <ui:Foldout text="Asteroids" name="AsteroidFoldout">
+    <ui:Foldout text="Asteroids" name="AsteroidFoldout" class="asteroids-foldout">
         <ui:VisualElement name="AsteroidGroup" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-            <ui:Label tabindex="-1" text="Asteroids" display-tooltip-when-elided="true" name="Asteroids" class="header" />
-            <ui:MinMaxSlider picking-mode="Ignore" label="Force" min-value="1" max-value="10" low-limit="0" high-limit="40" name="Force">
-                <ui:FloatField label="Min" value="42.2" name="MinForce" readonly="false" />
-                <ui:FloatField label="Max" value="42.2" name="MaxForce" />
-            </ui:MinMaxSlider>
-            <ui:MinMaxSlider picking-mode="Ignore" label="Size" min-value="1" max-value="10" low-limit="0" high-limit="40" name="Size">
+            <ui:Label tabindex="-1" text="Asteroids" display-tooltip-when-elided="true" name="Asteroids" class="asteroids-header" />
+            <ui:VisualElement class="asteroids-min-max-slider" style="flex-direction: row; width: 100%;">
+                <ui:FloatField value="42.2" name="MinForce" readonly="false" class="asteroids-minMaxSlider-field" />
+                <ui:MinMaxSlider picking-mode="Ignore" min-value="1" max-value="10" low-limit="0" high-limit="40" name="Force" class="asteroids-minMaxSlider asteroids-minMaxSlider-slider" />
+                <ui:FloatField value="42.2" name="MaxForce" style="width: 10%;" />
+            </ui:VisualElement>
+            <ui:MinMaxSlider picking-mode="Ignore" label="Size" min-value="1" max-value="10" low-limit="0" high-limit="40" name="Size" class="asteroids-minMaxSlider">
                 <ui:FloatField label="Min" value="42.2" name="MinForce" readonly="false" />
                 <ui:FloatField label="Max" value="42.2" name="MaxForce" />
             </ui:MinMaxSlider>
@@ -32,7 +33,7 @@
                 <ui:FloatField label="Min" value="42.2" name="MinForce" readonly="false" />
                 <ui:FloatField label="Max" value="42.2" name="MaxForce" />
             </ui:MinMaxSlider>
-            <ui:Label tabindex="-1" text="Spawner" display-tooltip-when-elided="true" name="Spawner" class="header" />
+            <ui:Label tabindex="-1" text="Spawner" display-tooltip-when-elided="true" name="Spawner" class="header asteroids-header" />
             <ui:SliderInt picking-mode="Ignore" label="Min Amount Spawned" value="42" high-value="100" name="SpawnAmountMin">
                 <ui:IntegerField value="42" name="Min" />
             </ui:SliderInt>

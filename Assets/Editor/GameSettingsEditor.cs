@@ -3,6 +3,7 @@ using Asteroids;
 using SettingsScripts;
 using Ship;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -15,9 +16,9 @@ namespace Editor
         [SerializeField] private VisualTreeAsset visualTreeAsset;
         
         //Ship references
-        private Slider _shipThrottlePowerSlider;
-        private Slider _shipRotationPowerField;
-        private IntegerField _shipStartingHealthField;
+        private PropertyField _shipThrottlePowerSlider;
+        private PropertyField _shipRotationPowerField;
+        private PropertyField _shipStartingHealthField;
         
         //Astroid references
         private MinMaxSlider _asteroidForceField;
@@ -75,19 +76,15 @@ namespace Editor
         {
             //Get references to and initialize fields
             //Ship
-            _shipThrottlePowerSlider = rootVisualElement.Q<Slider>("ThrottlePower");
-            _shipThrottlePowerSlider.RegisterValueChangedCallback(OnShipThrottleChanged);
-            _shipThrottlePowerSlider.SetValueWithoutNotify(_shipSettings.Throttle);
+            _shipThrottlePowerSlider = rootVisualElement.Q<PropertyField>("ThrottlePower");
+            _shipThrottlePowerSlider.BindProperty(new SerializedObject(_shipSettings).FindProperty("Throttle"));
             
-            _shipRotationPowerField = rootVisualElement.Q<Slider>("RotationPower");
-            _shipRotationPowerField.RegisterValueChangedCallback(OnShipRotationChanged);
-            _shipRotationPowerField.SetValueWithoutNotify(_shipSettings.Rotation);
+            _shipRotationPowerField = rootVisualElement.Q<PropertyField>("RotationPower");
+            _shipRotationPowerField.BindProperty(new SerializedObject(_shipSettings).FindProperty("Rotation"));
             
-            _shipStartingHealthField = rootVisualElement.Q<IntegerField>("StartingHealth");
-            _shipStartingHealthField.RegisterValueChangedCallback(OnShipHealthChanged);
-            _shipStartingHealthField.SetValueWithoutNotify(_shipSettings.Health.Value);
-            
-            
+            _shipStartingHealthField = rootVisualElement.Q<PropertyField>("StartingHealth");
+            _shipStartingHealthField.BindProperty(new SerializedObject(_shipSettings.Health).FindProperty("IntValue"));
+
             //Asteroid
             _asteroidForceField = rootVisualElement.Q<MinMaxSlider>("Force");
             _asteroidForceField.RegisterValueChangedCallback(OnAsteroidForceFieldChanged);
