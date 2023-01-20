@@ -7,8 +7,7 @@ namespace Variables
     [CreateAssetMenu(fileName = "new FloatVariable", menuName = "ScriptableObjects/Variables/IntVariable")]
     public class IntVariable : VariableBase<int>
     {
-
-        public int value;
+        public int IntValue;
         
         public override void SetValue(int newValue)
         {

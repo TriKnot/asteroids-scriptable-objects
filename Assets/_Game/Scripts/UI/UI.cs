@@ -24,7 +24,7 @@ namespace UI
         
         private void Start()
         {
-            SetHealthText($"Health: {_healthVar.value}");
+            SetHealthText($"Health: {_healthVar.Value}");
         }
 
         public void OnHealthChanged(IntReference newValue)
