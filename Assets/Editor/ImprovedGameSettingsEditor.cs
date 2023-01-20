@@ -14,7 +14,7 @@ namespace Editor
     public class ImprovedGameSettingsEditor : EditorWindow
     {
 
-        [SerializeField] private StyleSheet _styleSheet;
+        [SerializeField] private StyleSheet styleSheet;
         
         private VisualElement _root;
         
@@ -33,16 +33,16 @@ namespace Editor
         
         private void CreateUI()
         {
-            if (_styleSheet is null)
+            if (styleSheet is null)
             {
-                _styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Editor/StyleSheet/Game_Settings.uss");
+                styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Editor/StyleSheet/Game_Settings.uss");
                 
             }
             _root = rootVisualElement;
             
-            if(_styleSheet is not null)
+            if(styleSheet is not null)
             {
-                _root.styleSheets.Add(_styleSheet);
+                _root.styleSheets.Add(styleSheet);
             }            
             
 
@@ -79,8 +79,8 @@ namespace Editor
 
         private Foldout CreateShipFoldout(ShipSettings shipSettings)
         {
-            var shipFoldout = new Foldout();
-            shipFoldout.text = shipSettings.name;
+            var shipFoldout = new Foldout() 
+                {viewDataKey = shipSettings.name, text = shipSettings.name};
             shipFoldout.AddToClassList("asteroids-foldout");
             
             Label shipNameLabel = new Label("Ship");
@@ -106,8 +106,8 @@ namespace Editor
 
         private Foldout CreateAsteroidFoldout(AsteroidSettings asteroidSettings)
         {
-            var asteroidFoldout = new Foldout();
-            asteroidFoldout.text = asteroidSettings.name;
+            var asteroidFoldout = new Foldout()
+                {viewDataKey = asteroidSettings.name, text = asteroidSettings.name};
             asteroidFoldout.AddToClassList("asteroids-foldout");
             
             Label shipNameLabel = new Label("Asteroids");
@@ -131,8 +131,8 @@ namespace Editor
         
         private VisualElement CreateAsteroidSpawnerFoldout(AsteroidSpawnerSettings asteroidSpawner)
         {   
-            var asteroidSpawnerFoldout = new Foldout();
-            asteroidSpawnerFoldout.text = asteroidSpawner.name;
+            var asteroidSpawnerFoldout = new Foldout()
+                {viewDataKey = asteroidSpawner.name, text = asteroidSpawner.name};
             asteroidSpawnerFoldout.AddToClassList("asteroids-foldout");
             
             Label asteroidSpawnerLabel = new Label("Asteroid Spawner");

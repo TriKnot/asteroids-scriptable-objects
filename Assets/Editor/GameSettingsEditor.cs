@@ -14,6 +14,7 @@ namespace Editor
     {
         
         [SerializeField] private VisualTreeAsset visualTreeAsset;
+        [SerializeField] private StyleSheet styleSheet;
         
         //Ship references
         private PropertyField _shipThrottlePowerSlider;
@@ -35,9 +36,9 @@ namespace Editor
         private Toggle _asteroidsSpawnRight;
         
         [Header("Settings Scriptable Objects")]
-        [SerializeField] private ShipSettings _shipSettings;
-        [SerializeField] private AsteroidSettings _asteroidSettings;
-        [SerializeField] private AsteroidSpawnerSettings _asteroidSpawnerSettings;
+        [SerializeField] private ShipSettings shipSettings;
+        [SerializeField] private AsteroidSettings asteroidSettings;
+        [SerializeField] private AsteroidSpawnerSettings asteroidSpawnerSettings;
         
         [MenuItem("Tools/Game Settings")]
         public static void ShowWindow()
@@ -49,13 +50,33 @@ namespace Editor
 
         private void CreateGUI()
         {
+            if (styleSheet is null)
+            {
+                styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Editor/StyleSheet/Game_Settings.uss");
+                
+            }
             if (visualTreeAsset == null)
             {
                 visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/GameSettingsEditor.uxml");
                 if(visualTreeAsset == null) return; // If still null, get out of here
             }
             var root = rootVisualElement;
+            
+            if(styleSheet is not null)
+            {
+                root.styleSheets.Add(styleSheet);
+            }         
+            
+            /////////////////////////////
+            // Note with pointer to new Editor
+            Label label = new Label("OBS: \nDepricated, use the new editor v2 from Tools menu. " +
+                                    "\nSaving this one to show dev process.");
+            label.AddToClassList("-label-depricated");
+            root.Add(label);
+            /////////////////////////////
+            
             visualTreeAsset.CloneTree(root);
+            
             
             LoadSettings();
             InitFields();
@@ -64,12 +85,12 @@ namespace Editor
         
         private void LoadSettings()
         {
-            if(_shipSettings == null)
-                _shipSettings = Resources.Load<ShipSettings>("ScriptableObjects/ShipSettings");
-            if(_asteroidSettings == null)
-                _asteroidSettings = Resources.Load<AsteroidSettings>("ScriptableObjects/AsteroidSettings");
-            if(_asteroidSpawnerSettings == null)
-                _asteroidSpawnerSettings = Resources.Load<AsteroidSpawnerSettings>("ScriptableObjects/AsteroidSpawnerSettings");
+            if(shipSettings == null)
+                shipSettings = Resources.Load<ShipSettings>("ScriptableObjects/ShipSettings");
+            if(asteroidSettings == null)
+                asteroidSettings = Resources.Load<AsteroidSettings>("ScriptableObjects/AsteroidSettings");
+            if(asteroidSpawnerSettings == null)
+                asteroidSpawnerSettings = Resources.Load<AsteroidSpawnerSettings>("ScriptableObjects/AsteroidSpawnerSettings");
         }
         
         private void InitFields()
@@ -77,55 +98,55 @@ namespace Editor
             //Get references to and initialize fields
             //Ship
             _shipThrottlePowerSlider = rootVisualElement.Q<PropertyField>("ThrottlePower");
-            _shipThrottlePowerSlider.BindProperty(new SerializedObject(_shipSettings).FindProperty("Throttle"));
+            _shipThrottlePowerSlider.BindProperty(new SerializedObject(shipSettings).FindProperty("Throttle"));
             
             _shipRotationPowerField = rootVisualElement.Q<PropertyField>("RotationPower");
-            _shipRotationPowerField.BindProperty(new SerializedObject(_shipSettings).FindProperty("Rotation"));
+            _shipRotationPowerField.BindProperty(new SerializedObject(shipSettings).FindProperty("Rotation"));
             
             _shipStartingHealthField = rootVisualElement.Q<PropertyField>("StartingHealth");
-            _shipStartingHealthField.BindProperty(new SerializedObject(_shipSettings.Health).FindProperty("IntValue"));
+            _shipStartingHealthField.BindProperty(new SerializedObject(shipSettings.Health).FindProperty("IntValue"));
 
             //Asteroid
             _asteroidForceField = rootVisualElement.Q<MinMaxSlider>("Force");
             _asteroidForceField.RegisterValueChangedCallback(OnAsteroidForceFieldChanged);
-            _asteroidForceField.SetValueWithoutNotify(_asteroidSettings.Force);
+            _asteroidForceField.SetValueWithoutNotify(asteroidSettings.Force);
             
             _asteroidSizeField = rootVisualElement.Q<MinMaxSlider>("Size");
             _asteroidSizeField.RegisterValueChangedCallback(OnAsteroidSizeFieldChanged);
-            _asteroidSizeField.SetValueWithoutNotify(_asteroidSettings.Size);
+            _asteroidSizeField.SetValueWithoutNotify(asteroidSettings.Size);
             
             _asteroidTorqueField = rootVisualElement.Q<MinMaxSlider>("Torque");
             _asteroidTorqueField.RegisterValueChangedCallback(OnAsteroidTorqueFieldChanged);
-            _asteroidTorqueField.SetValueWithoutNotify(_asteroidSettings.Torque);
+            _asteroidTorqueField.SetValueWithoutNotify(asteroidSettings.Torque);
             
             //AsteroidSpawner
             _spawnRateField = rootVisualElement.Q<MinMaxSlider>("SpawnRate");
             _spawnRateField.RegisterValueChangedCallback(OnSpawnRateFieldChanged);
-            _spawnRateField.SetValueWithoutNotify(_asteroidSpawnerSettings.SpawnRate);
+            _spawnRateField.SetValueWithoutNotify(asteroidSpawnerSettings.SpawnRate);
             
             _spawnAmountMinField = rootVisualElement.Q<SliderInt>("SpawnAmountMin");
             _spawnAmountMinField.RegisterValueChangedCallback(evt => OnSpawnAmountFieldChanged(evt, true));
-            _spawnAmountMinField.SetValueWithoutNotify(_asteroidSpawnerSettings.SpawnAmount.x);
+            _spawnAmountMinField.SetValueWithoutNotify(asteroidSpawnerSettings.SpawnAmount.x);
             
             _spawnAmountMaxField = rootVisualElement.Q<SliderInt>("SpawnAmountMax");
             _spawnAmountMaxField.RegisterValueChangedCallback(evt => OnSpawnAmountFieldChanged(evt, false));
-            _spawnAmountMaxField.SetValueWithoutNotify(_asteroidSpawnerSettings.SpawnAmount.y);
+            _spawnAmountMaxField.SetValueWithoutNotify(asteroidSpawnerSettings.SpawnAmount.y);
             
             _asteroidsSpawnTop = rootVisualElement.Q<Toggle>("AsteroidsSpawnTop");
             _asteroidsSpawnTop.RegisterValueChangedCallback(evt => OnAsteroidSpawnPositionChanged(evt, SpawnLocation.Top));
-            _asteroidsSpawnTop.SetValueWithoutNotify(_asteroidSpawnerSettings.CanSpawnTop);
+            _asteroidsSpawnTop.SetValueWithoutNotify(asteroidSpawnerSettings.CanSpawnTop);
             
             _asteroidsSpawnBot = rootVisualElement.Q<Toggle>("AsteroidsSpawnBot");
             _asteroidsSpawnBot.RegisterValueChangedCallback(evt => OnAsteroidSpawnPositionChanged(evt, SpawnLocation.Bottom));
-            _asteroidsSpawnBot.SetValueWithoutNotify(_asteroidSpawnerSettings.CanSpawnBot);
+            _asteroidsSpawnBot.SetValueWithoutNotify(asteroidSpawnerSettings.CanSpawnBot);
             
             _asteroidsSpawnLeft = rootVisualElement.Q<Toggle>("AsteroidsSpawnLeft");
             _asteroidsSpawnLeft.RegisterValueChangedCallback(evt => OnAsteroidSpawnPositionChanged(evt, SpawnLocation.Left));
-            _asteroidsSpawnLeft.SetValueWithoutNotify(_asteroidSpawnerSettings.CanSpawnLeft);
+            _asteroidsSpawnLeft.SetValueWithoutNotify(asteroidSpawnerSettings.CanSpawnLeft);
             
             _asteroidsSpawnRight = rootVisualElement.Q<Toggle>("AsteroidsSpawnRight");
             _asteroidsSpawnRight.RegisterValueChangedCallback(evt => OnAsteroidSpawnPositionChanged(evt, SpawnLocation.Right));
-            _asteroidsSpawnRight.SetValueWithoutNotify(_asteroidSpawnerSettings.CanSpawnRight);
+            _asteroidsSpawnRight.SetValueWithoutNotify(asteroidSpawnerSettings.CanSpawnRight);
             
         }
         private void OnAsteroidSpawnPositionChanged(ChangeEvent<bool> evt, SpawnLocation spawnLocation)
@@ -133,28 +154,28 @@ namespace Editor
             switch (spawnLocation)
             {
                 case SpawnLocation.Bottom:
-                    _asteroidSpawnerSettings.CanSpawnBot = evt.newValue;
+                    asteroidSpawnerSettings.CanSpawnBot = evt.newValue;
                     break;
                 case SpawnLocation.Top:
-                    _asteroidSpawnerSettings.CanSpawnTop = evt.newValue;
+                    asteroidSpawnerSettings.CanSpawnTop = evt.newValue;
                     break;
                 case SpawnLocation.Left:
-                    _asteroidSpawnerSettings.CanSpawnLeft = evt.newValue;
+                    asteroidSpawnerSettings.CanSpawnLeft = evt.newValue;
                     break;
                 case SpawnLocation.Right:
-                    _asteroidSpawnerSettings.CanSpawnRight = evt.newValue;
+                    asteroidSpawnerSettings.CanSpawnRight = evt.newValue;
                     break; 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(spawnLocation), spawnLocation, null);
             }
-            EditorUtility.SetDirty(_asteroidSpawnerSettings);
+            EditorUtility.SetDirty(asteroidSpawnerSettings);
         }
 
         private void OnSpawnAmountFieldChanged(ChangeEvent<int> evt, bool isMin)
         {
-            EditorUtility.SetDirty(_asteroidSpawnerSettings);
-            var minVal = _asteroidSpawnerSettings.SpawnAmount.x;
-            var maxVal = _asteroidSpawnerSettings.SpawnAmount.y;
+            EditorUtility.SetDirty(asteroidSpawnerSettings);
+            var minVal = asteroidSpawnerSettings.SpawnAmount.x;
+            var maxVal = asteroidSpawnerSettings.SpawnAmount.y;
             
             if(isMin)
             {
@@ -175,49 +196,49 @@ namespace Editor
                 }
             }
 
-            _asteroidSpawnerSettings.SpawnAmount = new Vector2Int(minVal, maxVal);
+            asteroidSpawnerSettings.SpawnAmount = new Vector2Int(minVal, maxVal);
         }
 
         private void OnSpawnRateFieldChanged(ChangeEvent<Vector2> evt)
         {
-            EditorUtility.SetDirty(_asteroidSpawnerSettings);
-            _asteroidSpawnerSettings.SpawnRate = evt.newValue;
+            EditorUtility.SetDirty(asteroidSpawnerSettings);
+            asteroidSpawnerSettings.SpawnRate = evt.newValue;
         }
 
         private void OnAsteroidTorqueFieldChanged(ChangeEvent<Vector2> evt)
         {
-            EditorUtility.SetDirty(_asteroidSettings);
-            _asteroidSettings.Torque = evt.newValue;
+            EditorUtility.SetDirty(asteroidSettings);
+            asteroidSettings.Torque = evt.newValue;
         }
 
         private void OnAsteroidSizeFieldChanged(ChangeEvent<Vector2> evt)
         {
-            EditorUtility.SetDirty(_asteroidSettings);
-            _asteroidSettings.Size = evt.newValue;
+            EditorUtility.SetDirty(asteroidSettings);
+            asteroidSettings.Size = evt.newValue;
         }
 
         private void OnAsteroidForceFieldChanged(ChangeEvent<Vector2> evt)
         {
-            EditorUtility.SetDirty(_asteroidSettings);
-            _asteroidSettings.Force = evt.newValue;
+            EditorUtility.SetDirty(asteroidSettings);
+            asteroidSettings.Force = evt.newValue;
         }
         
         private void OnShipThrottleChanged(ChangeEvent<float> evt)
         {
-            EditorUtility.SetDirty(_shipSettings);
-            _shipSettings.Throttle = evt.newValue;
+            EditorUtility.SetDirty(shipSettings);
+            shipSettings.Throttle = evt.newValue;
         }
 
         private void OnShipRotationChanged(ChangeEvent<float> evt)
         {
-            EditorUtility.SetDirty(_shipSettings);
-            _shipSettings.Rotation = evt.newValue;
+            EditorUtility.SetDirty(shipSettings);
+            shipSettings.Rotation = evt.newValue;
         }
         
         private void OnShipHealthChanged(ChangeEvent<int> evt)
         {
-            EditorUtility.SetDirty(_shipSettings);
-            _shipSettings.Health.SetValue(evt.newValue);
+            EditorUtility.SetDirty(shipSettings);
+            shipSettings.Health.SetValue(evt.newValue);
         }
         
     }
