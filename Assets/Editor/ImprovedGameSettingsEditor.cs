@@ -73,11 +73,28 @@ namespace Editor
             asteroidSpawnerFoldout.Add(pfSpawnAmount);
             
             //Spawn Directions
-            var pfSpawnDirections = CreateField(so, "SpawnDirections");
+            var pfSpawnDirections = CreateBoolGroup(so);
             asteroidSpawnerFoldout.Add(pfSpawnDirections);
 
             
             return asteroidSpawnerFoldout;
+        }
+
+        private VisualElement CreateBoolGroup(SerializedObject so)
+        {
+            SerializedProperty sp = so.GetIterator();
+            VisualElement ve = new VisualElement();
+            
+            while (sp.NextVisible(true))
+            {
+                if(sp.propertyType == SerializedPropertyType.Boolean)
+                {
+                    var boolField = new Toggle(sp.displayName);
+                    boolField.BindProperty(sp);
+                    ve.Add(boolField);
+                }
+            }
+            return ve;
         }
 
         private Foldout CreateShipFoldout(ShipSettings shipSettings)
