@@ -72,7 +72,6 @@ namespace Asteroids
                      location == SpawnLocation.Bottom && _asteroidSpawnerSettings.CanSpawnBot == false ||
                      location == SpawnLocation.Left && _asteroidSpawnerSettings.CanSpawnLeft == false||
                      location == SpawnLocation.Right && _asteroidSpawnerSettings.CanSpawnRight == false );
-            print(location);
             return location;
         }
 
