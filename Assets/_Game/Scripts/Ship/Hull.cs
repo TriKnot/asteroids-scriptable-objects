@@ -1,4 +1,5 @@
 using ScriptableEvents;
+using SettingsScripts;
 using UnityEngine;
 using Variables;
 

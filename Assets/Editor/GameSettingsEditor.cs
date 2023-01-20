@@ -1,5 +1,6 @@
 ﻿using System;
 using Asteroids;
+using SettingsScripts;
 using Ship;
 using UnityEditor;
 using UnityEngine;
@@ -56,10 +57,7 @@ namespace Editor
             visualTreeAsset.CloneTree(root);
             
             LoadSettings();
-            
             InitFields();
-            
-            
         }
         
         
@@ -87,7 +85,7 @@ namespace Editor
             
             _shipStartingHealthField = rootVisualElement.Q<IntegerField>("StartingHealth");
             _shipStartingHealthField.RegisterValueChangedCallback(OnShipHealthChanged);
-            _shipStartingHealthField.SetValueWithoutNotify(_shipSettings.Health.value);
+            _shipStartingHealthField.SetValueWithoutNotify(_shipSettings.Health.Value);
             
             
             //Asteroid
@@ -222,7 +220,7 @@ namespace Editor
         private void OnShipHealthChanged(ChangeEvent<int> evt)
         {
             EditorUtility.SetDirty(_shipSettings);
-            _shipSettings.Health.value = evt.newValue;
+            _shipSettings.Health.SetValue(evt.newValue);
         }
         
     }

@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using Variables;
 
-namespace Asteroids
+namespace SettingsScripts
 {
     [CreateAssetMenu(fileName = "new AsteroidSpawnerSettings", 
         menuName = "ScriptableObjects/AsteroidSpawner Settings")]
-    public class AsteroidSpawnerSettings : ScriptableObject
+    public class AsteroidSpawnerSettings : SettingsBase
     {
         public Vector2 SpawnRate;
         public float MinSpawnTime => SpawnRate.x;

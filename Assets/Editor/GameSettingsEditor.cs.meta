@@ -6,6 +6,9 @@ MonoImporter:
   defaultReferences:
   - m_ViewDataDictionary: {instanceID: 0}
   - visualTreeAsset: {fileID: 9197481963319205126, guid: ea40f3ccbea4275468575d96114cec85, type: 3}
+  - _shipSettings: {fileID: 11400000, guid: dd556b3a428fec446a00daf5fbfb45ce, type: 2}
+  - _asteroidSettings: {fileID: 11400000, guid: aef1e393f185f6b468af5eee9c527169, type: 2}
+  - _asteroidSpawnerSettings: {fileID: 11400000, guid: 4012a6754e7ec94468e486308499a7d6, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

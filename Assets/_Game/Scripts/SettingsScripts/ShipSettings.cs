@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using Variables;
 
-namespace Ship
+namespace SettingsScripts
 {
     [CreateAssetMenu(fileName = "new ShipSettings", 
         menuName = "ScriptableObjects/Ship Settings")]
-    public class ShipSettings : ScriptableObject
+    public class ShipSettings : SettingsBase
     {
         [Range(0f, 30f)] 
         public float Throttle;
