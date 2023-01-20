@@ -14,7 +14,8 @@ namespace Editor
     public class ImprovedGameSettingsEditor : EditorWindow
     {
 
-        [SerializeField] private VisualTreeAsset visualTreeAsset;
+        [SerializeField] private StyleSheet _styleSheet;
+        
         private VisualElement _root;
         
         [MenuItem("Tools/Game Settings v2")]
@@ -27,7 +28,23 @@ namespace Editor
 
         private void CreateGUI()
         {
+            CreateUI();
+        }
+        
+        private void CreateUI()
+        {
+            if (_styleSheet is null)
+            {
+                _styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Editor/StyleSheet/Game_Settings.uss");
+                
+            }
             _root = rootVisualElement;
+            
+            if(_styleSheet is not null)
+            {
+                _root.styleSheets.Add(_styleSheet);
+            }            
+            
 
             ShipSettings[] shipSettingsArray = GetAssetsOfType<ShipSettings>();
 
@@ -51,16 +68,72 @@ namespace Editor
             {
                 var asteroidSpawnerFoldout = CreateAsteroidSpawnerFoldout(asteroidSpawner);
                 _root.Add(asteroidSpawnerFoldout);
-            }
+            }        
+            
+            Button redrawButton = new Button(ReDraw);
+            redrawButton.text = "Reload Window";
+            _root.Add(redrawButton);
+            
         }
 
+
+        private Foldout CreateShipFoldout(ShipSettings shipSettings)
+        {
+            var shipFoldout = new Foldout();
+            shipFoldout.text = shipSettings.name;
+            
+            Label shipNameLabel = new Label("Ship");
+            shipNameLabel.AddToClassList("asteroids-header");
+            shipFoldout.Add(shipNameLabel);
+
+            SerializedObject shipSO = new SerializedObject(shipSettings);
+
+            var pfThrottle = CreateField(shipSO, "Throttle");
+            shipFoldout.Add(pfThrottle);
+            
+            var pfRotation = CreateField(shipSO, "Rotation");
+            shipFoldout.Add(pfRotation);
+           
+            SerializedObject so = new SerializedObject(shipSettings.Health);
+            
+            var pfHealth = CreateField(so, "IntValue", "Starting Health");
+            shipFoldout.Add(pfHealth);
+            
+            return shipFoldout;
+            
+        }
+
+        private Foldout CreateAsteroidFoldout(AsteroidSettings asteroidSettings)
+        {
+            var asteroidFoldout = new Foldout();
+            asteroidFoldout.text = asteroidSettings.name;
+            
+            Label shipNameLabel = new Label("Asteroids");
+            shipNameLabel.AddToClassList("asteroids-header");
+            asteroidFoldout.Add(shipNameLabel);
+            
+            SerializedObject so = new SerializedObject(asteroidSettings);
+
+            //MinMax Force
+            var pfForce = CreateField(so, "Force");
+            asteroidFoldout.Add(pfForce);
+            //MinMax Size
+            var pfSize = CreateField(so, "Size");
+            asteroidFoldout.Add(pfSize);
+            //MinMax Torque
+            var pfTorque = CreateField(so, "Torque");
+            asteroidFoldout.Add(pfTorque);
+
+            return asteroidFoldout;
+        }
+        
         private VisualElement CreateAsteroidSpawnerFoldout(AsteroidSpawnerSettings asteroidSpawner)
         {   
             var asteroidSpawnerFoldout = new Foldout();
             asteroidSpawnerFoldout.text = asteroidSpawner.name;
             
             Label asteroidSpawnerLabel = new Label("Asteroid Spawner");
-            asteroidSpawnerLabel.AddToClassList("header");
+            asteroidSpawnerLabel.AddToClassList("asteroids-header");
             asteroidSpawnerFoldout.Add(asteroidSpawnerLabel);
             
             SerializedObject so = new SerializedObject(asteroidSpawner);
@@ -95,56 +168,6 @@ namespace Editor
                 }
             }
             return ve;
-        }
-
-        private Foldout CreateShipFoldout(ShipSettings shipSettings)
-        {
-            var shipFoldout = new Foldout();
-            shipFoldout.text = shipSettings.name;
-            
-            Label shipNameLabel = new Label("Ship");
-            shipNameLabel.AddToClassList("header");
-            shipFoldout.Add(shipNameLabel);
-
-            SerializedObject shipSO = new SerializedObject(shipSettings);
-
-            var pfThrottle = CreateField(shipSO, "Throttle");
-            shipFoldout.Add(pfThrottle);
-            
-            var pfRotation = CreateField(shipSO, "Rotation");
-            shipFoldout.Add(pfRotation);
-           
-            SerializedObject so = new SerializedObject(shipSettings.Health);
-            
-            var pfHealth = CreateField(so, "IntValue", "Starting Health");
-            shipFoldout.Add(pfHealth);
-            
-            return shipFoldout;
-            
-        }
-
-        private Foldout CreateAsteroidFoldout(AsteroidSettings asteroidSettings)
-        {
-            var asteroidFoldout = new Foldout();
-            asteroidFoldout.text = asteroidSettings.name;
-            
-            Label shipNameLabel = new Label("Asteroids");
-            shipNameLabel.AddToClassList("header");
-            asteroidFoldout.Add(shipNameLabel);
-            
-            SerializedObject so = new SerializedObject(asteroidSettings);
-
-            //MinMax Force
-            var pfForce = CreateField(so, "Force");
-            asteroidFoldout.Add(pfForce);
-            //MinMax Size
-            var pfSize = CreateField(so, "Size");
-            asteroidFoldout.Add(pfSize);
-            //MinMax Torque
-            var pfTorque = CreateField(so, "Torque");
-            asteroidFoldout.Add(pfTorque);
-
-            return asteroidFoldout;
         }
         
         private VisualElement CreateField(SerializedObject so, string propertyName, string label = "")
@@ -182,6 +205,8 @@ namespace Editor
                 
                 default:
                     ve = new PropertyField(sp, label);
+                    ve.AddToClassList("asteroids-property-field");
+                    
                     break;
             }
             ve.Bind(so);
@@ -253,8 +278,12 @@ namespace Editor
             ve.Add(maxField);
         }
 
+        private void ReDraw()
+        {
+            _root.Clear();
+            CreateUI();
+        }
 
-        
         public static T[] GetAssetsOfType<T>() where T : ScriptableObject
         {
             string[] guids = AssetDatabase.FindAssets($"t: {typeof(T).Name}");
